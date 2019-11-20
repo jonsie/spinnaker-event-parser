@@ -1,6 +1,11 @@
 # spinnaker-event-parser
 
-Event parser for Spinnaker such that remote Event parses are not necessary.
+_**IMPORTANT: This is an incubating project.**_
+
+A plugin to parse events prior to POSTing to a remote service.  Addresses the common pattern of 
+parsing events in a downstream service (for use in an event pipeline, for example).
+
+Also can serve to remove the half-baked the `echo-rest` `RestEventTemplateEngine`.
 
 ## Notes on implementation
 

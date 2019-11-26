@@ -1,11 +1,11 @@
 dependencies {
     implementation "com.netflix.spinnaker.kork:kork-plugins-api:$korkVersion"
-//    implementation "com.netflix.spinnaker.orca:echo-api:$echoVersion"
+    implementation "com.netflix.spinnaker.echo:echo-api:$echoVersion"
 }
 
 jar {
     manifest {
-        attributes "Plugin-Class": "com.jonsie.spinnaker.plugin.eventparser.EventParserPlugin",
+        attributes "Plugin-Class": "com.jonsie.spinnaker.plugin.event.echo.EventParserPlugin",
                 "Plugin-Id": "eventparser",
                 "Plugin-Version": version,
                 "Plugin-Provider": "jonsie"

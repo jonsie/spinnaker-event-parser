@@ -11,11 +11,3 @@ in `echo-rest`.
 ## Notes on implementation
 
 Tracking my thoughts on first pass at implementation so I can review things afterwards:
-
-### dependency issues
-
-Looks like `pf4j` is a required dependency for plugins right now - since the plugin needs to extend
-`org.pf4j.Plugin` and the implementation requires `org.pf4j.PluginWrapper`.
-
-There is an attempt to not leak `pf4j` via `@SpinnakerExtension`, however that looks incomplete as 
-`org.pf4j.Extension` is still required.

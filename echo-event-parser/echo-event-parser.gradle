@@ -6,7 +6,7 @@ dependencies {
 jar {
     manifest {
         attributes "Plugin-Class": "com.jonsie.spinnaker.plugin.event.echo.EventParserPlugin",
-                "Plugin-Id": "eventparser",
+                "Plugin-Id": "jonsie.eventparser",
                 "Plugin-Version": version,
                 "Plugin-Provider": "jonsie"
     }

@@ -42,7 +42,7 @@ subprojects {
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
 
-    group = "com.jonsie.spinnaker.plugin.echo.rest"
+    group = "com.jonsie.spinnaker.plugin.event.echo"
     version = rootProject.version
 
     // TODO(rz): Blech.

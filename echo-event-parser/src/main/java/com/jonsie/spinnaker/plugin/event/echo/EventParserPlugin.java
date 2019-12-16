@@ -18,7 +18,7 @@ public class EventParserPlugin extends Plugin {
     }
 
     @Extension
-    @SpinnakerExtension(namespace = "jonsie", id = "eventparser")
+    @SpinnakerExtension(id = "jonsie.eventparser")
     public static class EventParser implements RestEventParser {
 
         @Override

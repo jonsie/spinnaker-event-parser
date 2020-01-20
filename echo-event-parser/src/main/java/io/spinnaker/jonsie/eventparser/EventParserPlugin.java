@@ -1,4 +1,4 @@
-package com.jonsie.spinnaker.plugin.event.echo;
+package io.spinnaker.jonsie.eventparser;
 
 
 import com.netflix.spinnaker.echo.extension.rest.RestEventParser;
@@ -18,7 +18,7 @@ public class EventParserPlugin extends Plugin {
     }
 
     @Extension
-    @SpinnakerExtension(id = "jonsie.eventparser")
+    @SpinnakerExtension(id = "io.spinnaker.jonsie.eventparser")
     public static class EventParser implements RestEventParser {
 
         @Override

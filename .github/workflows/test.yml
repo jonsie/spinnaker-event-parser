@@ -18,7 +18,7 @@ jobs:
           echo ::set-output name=CHANGELOG::${COMMITS}
       - name: Create release
         id: create_release
-        uses: actions/create-release@1.0.1
+        uses: actions/create-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         with:

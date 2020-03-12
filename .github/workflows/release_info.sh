@@ -15,3 +15,6 @@ CHANGELOG="${CHANGELOG//$'\r'/%0D}"
 
 # If the previous release tag is the same as this tag the user likely cut a release (and in the process created a tag), which means we can skip the need to create a release
 export SKIP_RELEASE=`[[ "$PREVIOUS_TAG" = "$NEW_TAG" ]] && echo "true" || echo "false"`
+
+VERSION_RE="^v?(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(-rc.(?:0|[1-9]\\d*))?$"
+export IS_CANDIDATE=`[[ $NEW_TAG =~ $VERSION_RE && ! -z ${BASH_REMATCH[4]} ]] && echo "true" || echo "false"`

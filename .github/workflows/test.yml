@@ -11,25 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: is_candidate
-        id: is_candidate
-        run: |
-          VERSION_RE="^v?(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(-rc.(?:0|[1-9]\\d*))?$"
-          if [[ $TAG_NAME =~ $VERSION_RE && ! -z ${BASH_REMATCH[4]}]]; then
-            echo ::set-output name=CANDIDATE::true
-          else
-            echo ::set-output name=CANDIDATE::false
-          fi
-      - name: Get the changelog
-        id: get_changelog
+      - name: Assemble release info
+        id: release_info
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         run: |
           . .github/workflows/release_info.sh ${{ github.event.repository.name }}
           echo ::set-output name=CHANGELOG::$(echo -e "${CHANGELOG}")
           echo ::set-output name=SKIP_RELEASE::${SKIP_RELEASE}
+          echo ::set-output name=IS_CANDIDATE::${IS_CANDIDATE}
       - name: Create release
-        if: steps.get_changelog.outputs.SKIP_RELEASE == 'false' && steps.is_candidate.outputs.CANDIDATE == 'false'
+        if: steps.get_changelog.outputs.SKIP_RELEASE == 'false' && steps.release_info.outputs.CANDIDATE == 'false'
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
@@ -37,11 +29,11 @@ jobs:
            tag_name: ${{ github.ref }}
            release_name: ${{ github.event.repository.name }} ${{ github.ref }}
            body: |
-            ${{ steps.get_changelog.outputs.CHANGELOG }}
+            ${{ steps.release_info.outputs.CHANGELOG }}
            draft: false
            prerelease: false
       - name: Create prerelease
-        if: steps.get_changelog.outputs.SKIP_RELEASE == 'false' && steps.is_candidate.outputs.CANDIDATE == 'true'
+        if: steps.get_changelog.outputs.SKIP_RELEASE == 'false' && steps.release_info.outputs.CANDIDATE == 'true'
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
@@ -49,6 +41,6 @@ jobs:
            tag_name: ${{ github.ref }}
            release_name: ${{ github.event.repository.name }} ${{ github.ref }}
            body: |
-            ${{ steps.get_changelog.outputs.CHANGELOG }}
+            ${{ steps.release_info.outputs.CHANGELOG }}
            draft: false
            prerelease: true

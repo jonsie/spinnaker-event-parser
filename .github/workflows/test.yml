@@ -15,10 +15,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         run: |
-          export PREVIOUS_RELEASE_TAG=`curl --silent "https://api.github.com/repos/jonsie/${{ github.event.repository.name }}/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'`
-          export THIS_TAG=${GITHUB_REF/refs\/tags\//}
-          export CHANGELOG=`git log $THIS_TAG..$PREVIOUS_RELEASE_TAG --pretty=format:"%s"`
-          export SKIP_RELEASE=`[[ "$PREVIOUS_RELEASE_TAG" = "$THIS_TAG" ]] && echo "true" || echo "false"`
+          . .github/workflows/release_info.sh
+          echo ::set-output name=NEW_TAG::${NEW_TAG}
           echo ::set-output name=CHANGELOG::${CHANGELOG}
           echo ::set-output name=SKIP_RELEASE::${SKIP_RELEASE}
       - name: Create release
@@ -27,8 +25,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         with:
-           tag_name: ${{ github.ref }}
-           release_name: spinnaker-event-parser ${{ github.ref }}
+           tag_name: ${{ steps.get_changelog.outputs.NEW_TAG  }}
+           release_name: spinnaker-event-parser ${{ steps.get_changelog.outputs.NEW_TAG }}
            body: |
              ${{ steps.get_changelog.outputs.CHANGELOG }}
            draft: false

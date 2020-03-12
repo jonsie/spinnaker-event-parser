@@ -27,4 +27,5 @@ SEMVER_REGEX="\
 (\\-(${IDENT})(\\.(${IDENT}))*)?\
 (\\+${FIELD}(\\.${FIELD})*)?$"
 
+# Used in downstream steps to determine if the release should be marked as a "prerelease" and if the build should build candidate release artifacts
 export IS_CANDIDATE=`[[ $NEW_TAG =~ $SEMVER_REGEX && ! -z ${BASH_REMATCH[4]} ]] && echo "true" || echo "false"`

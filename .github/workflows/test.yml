@@ -21,7 +21,7 @@ jobs:
           echo ::set-output name=SKIP_RELEASE::${SKIP_RELEASE}
           echo ::set-output name=IS_CANDIDATE::${IS_CANDIDATE}
       - name: Create release
-        if: steps.release_info.outputs.SKIP_RELEASE == 'false' && steps.release_info.outputs.IS_CANDIDATE == 'false'
+        if: steps.release_info.outputs.SKIP_RELEASE == 'false'
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
@@ -31,16 +31,4 @@ jobs:
            body: |
             ${{ steps.release_info.outputs.CHANGELOG }}
            draft: false
-           prerelease: false
-      - name: Create prerelease
-        if: steps.release_info.outputs.SKIP_RELEASE == 'false' && steps.release_info.outputs.IS_CANDIDATE == 'true'
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-        with:
-           tag_name: ${{ github.ref }}
-           release_name: ${{ github.event.repository.name }} ${{ github.ref }}
-           body: |
-            ${{ steps.release_info.outputs.CHANGELOG }}
-           draft: false
-           prerelease: true
+           prerelease: ${{ steps.release_info.outputs.IS_CANDIDATE }}

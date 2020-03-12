@@ -26,6 +26,6 @@ jobs:
         with:
            tag_name: ${{ github.ref }}
            release_name: ${{ github.event.repository.name }} ${{ github.ref }}
-           body: ${{ steps.get_version.outputs.VERSION }}
+           body: ${{ steps.get_changelog.outputs.VERSION }}
            draft: false
            prerelease: false

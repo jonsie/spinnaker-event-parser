@@ -20,7 +20,7 @@ jobs:
           echo ::set-output name=CHANGELOG::${git log $THIS_TAG..$PREVIOUS_RELEASE_TAG --pretty=format:"%s"}
           echo ::set-output name=SKIP_RELEASE::${[[ "$PREVIOUS_RELEASE_TAG" = "$THIS_TAG" ]] && echo "true" || echo "false"}
       - name: Create release
-        if: ${{ steps.get_changelog.outputs.SKIP_RELEASE == "false" }}
+        if: steps.get_changelog.outputs.SKIP_RELEASE == 'false'
         uses: actions/create-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 

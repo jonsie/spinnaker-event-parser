@@ -9,10 +9,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: 
-  build:
-    runs-on: ubuntu-latest
-    steps:
       - uses: actions/checkout@v1
       - name: Get the changelog
         id: get_changelog

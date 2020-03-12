@@ -11,7 +11,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-
+      - name: is_candidate
+        id: is_candidate
+        env:
+          VERSION_RE: "^v?(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(-rc.(?:0|[1-9]\\d*))?$"
+        run: |
+          if [[ $TAG_NAME =~ $VERSION_RE && ! -z ${BASH_REMATCH[4]}]]; then
+            echo ::set-output name=CANDIDATE::true
+          else
+            echo ::set-output name=CANDIDATE::false
+          fi
       - name: Get the changelog
         id: get_changelog
         env:
@@ -21,7 +30,7 @@ jobs:
           echo ::set-output name=CHANGELOG::$(echo -e "${CHANGELOG}")
           echo ::set-output name=SKIP_RELEASE::${SKIP_RELEASE}
       - name: Create release
-        if: steps.get_changelog.outputs.SKIP_RELEASE == 'false' && github.event.ref == 'v[0-9]+.[0-9]+.[0-9]+'
+        if: steps.get_changelog.outputs.SKIP_RELEASE == 'false' && steps.is_candidate.outputs.CANDIDATE == 'false'
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
@@ -33,7 +42,7 @@ jobs:
            draft: false
            prerelease: false
       - name: Create prerelease
-        if: steps.get_changelog.outputs.SKIP_RELEASE == 'false' && github.event.ref == 'v[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+'
+        if: steps.get_changelog.outputs.SKIP_RELEASE == 'false' && steps.is_candidate.outputs.CANDIDATE == 'true'
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 

@@ -17,10 +17,10 @@ jobs:
         run: |
           export PREVIOUS_RELEASE_TAG=`curl --silent "https://api.github.com/repos/jonsie/${{ github.event.repository.name }}/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'`
           export THIS_TAG=${GITHUB_REF/refs\/tags\//}
-          export COMMITS=`git log $THIS_TAG..$PREVIOUS_RELEASE_TAG --pretty=format:"%s"`
-          echo ::set-output name=CHANGELOG::${COMMITS}
+          echo ::set-output name=CHANGELOG::${git log $THIS_TAG..$PREVIOUS_RELEASE_TAG --pretty=format:"%s"}
+          echo ::set-output name=SKIP_RELEASE::${[[ "$PREVIOUS_RELEASE_TAG" = "$THIS_TAG" ]] && echo "true" || echo "false"}
       - name: Create release
-        id: create_release
+        if: ${{ steps.get_changelog.outputs.SKIP_RELEASE == "false" }}
         uses: actions/create-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 

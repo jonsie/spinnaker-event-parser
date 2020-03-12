@@ -8,5 +8,9 @@ echo "NEW_TAG=$NEW_TAG"
 export CHANGELOG=`git log $NEW_TAG...$PREVIOUS_TAG --oneline`
 echo "CHANGELOG=$CHANGELOG"
 
+CHANGELOG="${CHANGELOG//$'%'/%25}"
+CHANGELOG="${CHANGELOG//$'\n'/%0A}"
+CHANGELOG="${CHANGELOG//$'\r'/%0D}"
+
 # If the previous release tag is the same as this tag the user likely cut a release (and in the process created a tag), which means we can skip the need to create a release
 export SKIP_RELEASE=`[[ "$PREVIOUS_TAG" = "$NEW_TAG" ]] && echo "true" || echo "false"`

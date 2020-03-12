@@ -16,10 +16,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         run: |
           . .github/workflows/release_info.sh ${{ github.event.repository.name }}
-
-          CHANGELOG="${CHANGELOG//$'%'/%25}"
-          CHANGELOG="${CHANGELOG//$'\n'/%0A}"
-          CHANGELOG="${CHANGELOG//$'\r'/%0D}"
           echo ::set-output name=CHANGELOG::$(echo -e "${CHANGELOG}")
           echo ::set-output name=SKIP_RELEASE::${SKIP_RELEASE}
       - name: Create release

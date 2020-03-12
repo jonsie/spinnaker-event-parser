@@ -13,9 +13,8 @@ jobs:
       - uses: actions/checkout@v1
       - name: is_candidate
         id: is_candidate
-        env:
-          VERSION_RE: "^v?(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(-rc.(?:0|[1-9]\\d*))?$"
         run: |
+          VERSION_RE="^v?(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(-rc.(?:0|[1-9]\\d*))?$"
           if [[ $TAG_NAME =~ $VERSION_RE && ! -z ${BASH_REMATCH[4]}]]; then
             echo ::set-output name=CANDIDATE::true
           else

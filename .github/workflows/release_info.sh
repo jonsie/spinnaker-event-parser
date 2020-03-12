@@ -8,6 +8,7 @@ echo "NEW_TAG=$NEW_TAG"
 export CHANGELOG=`git log $NEW_TAG...$PREVIOUS_TAG --oneline`
 echo "CHANGELOG=$CHANGELOG"
 
+#Format the changelog so it's markdown compatible
 CHANGELOG="${CHANGELOG//$'%'/%25}"
 CHANGELOG="${CHANGELOG//$'\n'/%0A}"
 CHANGELOG="${CHANGELOG//$'\r'/%0D}"

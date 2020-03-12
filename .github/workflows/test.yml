@@ -1,4 +1,4 @@
-name: Test release
+name: ${{ github.event.repository.name }} release
 
 on:
   push:

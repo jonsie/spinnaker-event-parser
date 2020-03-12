@@ -16,22 +16,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         run: |
           . .github/workflows/release_info.sh
-          text="${text//$'%'/%25}"
-          text="${text//$'\n'/%0A}"
-          text="${text//$'\r'/%0D}"
-          echo "::set-env name=value::$text"
-          echo ::set-output name=NEW_TAG::${NEW_TAG}
           echo ::set-output name=CHANGELOG::${CHANGELOG}
           echo ::set-output name=SKIP_RELEASE::${SKIP_RELEASE}
+          echo $CHANGELOG >> body.md
       - name: Create release
         if: steps.get_changelog.outputs.SKIP_RELEASE == 'false'
         uses: actions/create-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         with:
-           tag_name: ${{ steps.get_changelog.outputs.NEW_TAG  }}
-           release_name: spinnaker-event-parser ${{ steps.get_changelog.outputs.CHANGELOG }}
-           body: |
-             ${{ steps.get_changelog.outputs.CHANGELOG }}
+           tag_name: ${{ github.ref }}
+           release_name: spinnaker-event-parser ${{ github.ref }}
+           bodyFromFile: .github/workflows/body.md
            draft: false
            prerelease: false

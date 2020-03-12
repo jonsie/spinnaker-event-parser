@@ -12,3 +12,6 @@ jar {
                 "Plugin-Requires": "echo>=2.21.0"
     }
 }
+
+
+

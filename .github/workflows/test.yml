@@ -15,7 +15,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         run: |
-          . .github/workflows/release_info.sh
+          . .github/workflows/release_info.sh ${{ github.event.repository.name }}
           echo ::set-output name=CHANGELOG::${CHANGELOG}
           echo ::set-output name=SKIP_RELEASE::${SKIP_RELEASE}
           echo $CHANGELOG >> body.md

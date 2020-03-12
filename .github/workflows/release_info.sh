@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Only look to the latest release to determine the previous tag -- this allows us to skip unsupported tag formats (like `version-1.0.0`)
-export PREVIOUS_TAG=`curl --silent "https://api.github.com/repos/jonsie/${{ github.event.repository.name }}/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'`
+export PREVIOUS_TAG=`curl --silent "https://api.github.com/repos/jonsie/$1/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'`
 export NEW_TAG=${GITHUB_REF/refs\/tags\//}
 export CHANGELOG=`git log $NEW_TAG..$PREVIOUS_TAG --oneline`
 

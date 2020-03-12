@@ -19,6 +19,7 @@ jobs:
           echo ::set-output name=CHANGELOG::${CHANGELOG}
           echo ::set-output name=SKIP_RELEASE::${SKIP_RELEASE}
           echo $CHANGELOG >> body.md
+          cat body.md
       - name: Create release
         if: steps.get_changelog.outputs.SKIP_RELEASE == 'false'
         uses: actions/create-release@master

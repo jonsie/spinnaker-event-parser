@@ -18,15 +18,14 @@ jobs:
           . .github/workflows/release_info.sh ${{ github.event.repository.name }}
           echo ::set-output name=CHANGELOG::${CHANGELOG}
           echo ::set-output name=SKIP_RELEASE::${SKIP_RELEASE}
-          echo $CHANGELOG >> body.md
       - name: Create release
         if: steps.get_changelog.outputs.SKIP_RELEASE == 'false'
-        uses: jbolda/create-release@v1.1.0
+        uses: actions/create-release@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         with:
            tag_name: ${{ github.ref }}
            release_name: ${{ github.event.repository.name }} ${{ github.ref }}
-           bodyFromFile: .github/workflows/body.md
+           body: ${{ steps.get_version.outputs.VERSION }}
            draft: false
            prerelease: true

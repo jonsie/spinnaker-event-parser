@@ -1,0 +1,12 @@
+name: Do something please
+
+on:
+  repository_dispatch:
+    types: [ do-a-thing ]
+
+jobs:
+  do-a-thing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pause before dependency bump
+        run: echo "I did a thing"

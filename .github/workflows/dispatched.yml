@@ -1,8 +1,6 @@
 name: Do something please
 
-on:
-  repository_dispatch:
-    types: [ do-a-thing ]
+on: repository_dispatch
 
 jobs:
   do-a-thing:
